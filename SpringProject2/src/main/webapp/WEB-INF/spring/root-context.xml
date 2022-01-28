@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		
+<!-- 		<bean id="memberController" class="com.itwillbs.controller.MemberController"> -->
+<!-- 			<constructor-arg ref="memberService"></constructor-arg> -->
+<!-- 		</bean> -->
+		
+<!-- 		<bean id="memberController" class="com.itwillbs.controller.MemberController"> -->
+<!-- 			<property name="memberService" ref="memberService"></property>  -->
+<!-- 		</bean> -->
+		
+<!-- 		<bean id="memberService" class="com.itwillbs.service.MemberServiceImpl"> -->
+<!-- 			<property name="memberDAO" ref="memberDAO"></property> -->
+<!-- 		</bean> -->
+		
+<!-- 		<bean id="memberDAO" class="com.itwillbs.dao.MemberDAOImpl"> -->
+<!-- 			<property name="dataSource" ref="dataSource"></property> -->
+<!-- 		</bean> -->
+		
+		<!-- 디비연결  1,2 단계  -->
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+			<property name="url" value="jdbc:mysql://localhost:3306/jspdb3"></property>
+			<property name="username" value="root"></property>
+			<property name="password" value="1234"></property>
+		</bean>
+		
+		<!-- 마이바티스 설정 -->
+		<!-- 1. 디비연결 setDataSource 호출 객체생성 전달-->
+		<!-- 2. setConfigLocation 
+		src/main/resources mybatis-config.xml 파일 만들고 경로 설정
+		https://mybatis.org/mybatis-3/ko/getting-started.htm 
+		환경설정파일 경로 classpath:/mybatis-config.xml -->
+		<!-- 3. sql구문이 들어있는 mappers 폴더 만들기
+		 memberMapper.xml 파일 만들고 경로 설정 
+		 sql구문파일 경로 classpath:mappers/**/*Mapper.xml-->
+		
+		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+			<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+			<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml"></property>
+		</bean>
+		
+		<!-- 마이바티스 설정을 가져와서 세션 생성 -->
+		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+			<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+		</bean>
+		
+		
+		
+</beans>

@@ -8,5 +8,6 @@
 </head>
 <body>
 <h1>/WEB-INF/views/insert.jsp</h1>
+안녕하세요!
 </body>
 </html>
